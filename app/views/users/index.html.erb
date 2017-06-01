@@ -1,5 +1,14 @@
 
 <%= form_for :form_city, url: {controller:"works", action: "select_country"}, html: {class: "user_form"}, remote: true do |f| %>
+
+    <div class="form-group">
+      <select id="custom_select" name="country">
+        <% CS.countries.each do |i, v|  %>
+            <option value="i"><%= v %></option>
+        <% end %>
+      </select>
+    </div>
+
     <div class="form-group">
       <%= f.text_field :name, class: "form-control", placeholder: "city" %>
     </div>
@@ -11,7 +20,3 @@
 <br><br>
 
 <div id="result"></div>
-
-<!--<select id="custom_select">
-</select>
-<br><br>-->

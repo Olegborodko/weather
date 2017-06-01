@@ -1,11 +1,19 @@
 class WorksController < ApplicationController
   def select_country
 
-    @city = form_city[:name]
+    url = URI.escape("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='#{form_city[:name]}'")
 
+    response = HTTParty.get(url)
+    # puts response.body, response.code, response.message, response.headers.inspect
 
-    http://maps.googleapis.com/maps/api/geocode/json?address=&sensor=false
+    city = JSON.parse(response.body)
+    city = city['results'].first['address_components'].first['long_name']
 
+    url = URI.escape("http://api.openweathermap.org/data/2.5/weather?APPID=#{Rails.application.secrets.api_openweathermap_key}&q='#{city}'")
+    response = HTTParty.get(url)
+    @city = JSON.parse(response.body)
+
+    # @city = Rails.application.secrets.api_openweathermap_key
 
     respond_to do |format|
       format.js
