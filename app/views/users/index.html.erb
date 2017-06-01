@@ -1,0 +1,17 @@
+
+<%= form_for :form_city, url: {controller:"works", action: "select_country"}, html: {class: "user_form"}, remote: true do |f| %>
+    <div class="form-group">
+      <%= f.text_field :name, class: "form-control", placeholder: "city" %>
+    </div>
+    <div class="form-group">
+      <%= f.submit "select", class: "btn, btn-default" %>
+    </div>
+<% end %>
+
+<br><br>
+
+<div id="result"></div>
+
+<!--<select id="custom_select">
+</select>
+<br><br>-->
