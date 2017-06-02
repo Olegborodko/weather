@@ -1,30 +1,20 @@
 class WorksController < ApplicationController
   def select_country
 
-    # url = URI.escape("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='#{form_city[:name]}'")
-    #
-    # response = HTTParty.get(url)
-    # # puts response.body, response.code, response.message, response.headers.inspect
-    #
-    # city = JSON.parse(response.body)
-    #
-    # if city['status']=='OK'
-    #   city = city['results'].first['address_components'].first['long_name']
-    #
-    #   url = URI.escape("http://api.openweathermap.org/data/2.5/forecast?APPID=#{Rails.application.secrets.api_openweathermap_key}&q='#{city}'")
-    #   response = HTTParty.get(url)
-    #   @city = JSON.parse(response.body)
-    # end
+    country_and_city = GetCountryAndCity.new(form_city[:name]).call
 
-    w_api = Wunderground.new("be9be61db72d4432")
-    # w_api.forecast_for("WA","Spokane")
-
-    @city = w_api.forecast_for("Russia","Moscow")
-
-
-    respond_to do |format|
-      format.js
+    if country_and_city
+      weather = ApiOpenweathermap.new(country_and_city[:city], country_and_city[:country_key], 5).call
+      # weather = ApiWunderground.new(country_and_city[:city], country_and_city[:country_key], 4).call
+      if weather
+        @city = weather
+      end
     end
+
+
+    #respond_to do |format|
+    #  format.js
+    #end
 
     # respond_to do |format|
     # format.js { render js: "response_='#{country}'" }

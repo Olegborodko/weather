@@ -20,7 +20,7 @@ $(document).ready(function() {
   //   });
   // })
 
-  $("#custom_select").chosen();
+  // $("#custom_select").chosen();
 });
 
 

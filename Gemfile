@@ -38,8 +38,8 @@ gem 'sass-rails'
 gem 'jquery-rails'
 gem 'haml'
 gem 'httparty'
-gem 'city-state'
-gem 'chosen-rails'
+# gem 'city-state'
+# gem 'chosen-rails'
 gem 'wunderground'
 
 group :development, :test do
