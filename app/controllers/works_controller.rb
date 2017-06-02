@@ -1,19 +1,26 @@
 class WorksController < ApplicationController
   def select_country
 
-    url = URI.escape("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='#{form_city[:name]}'")
+    # url = URI.escape("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='#{form_city[:name]}'")
+    #
+    # response = HTTParty.get(url)
+    # # puts response.body, response.code, response.message, response.headers.inspect
+    #
+    # city = JSON.parse(response.body)
+    #
+    # if city['status']=='OK'
+    #   city = city['results'].first['address_components'].first['long_name']
+    #
+    #   url = URI.escape("http://api.openweathermap.org/data/2.5/forecast?APPID=#{Rails.application.secrets.api_openweathermap_key}&q='#{city}'")
+    #   response = HTTParty.get(url)
+    #   @city = JSON.parse(response.body)
+    # end
 
-    response = HTTParty.get(url)
-    # puts response.body, response.code, response.message, response.headers.inspect
+    w_api = Wunderground.new("be9be61db72d4432")
+    # w_api.forecast_for("WA","Spokane")
 
-    city = JSON.parse(response.body)
-    city = city['results'].first['address_components'].first['long_name']
+    @city = w_api.forecast_for("Russia","Moscow")
 
-    url = URI.escape("http://api.openweathermap.org/data/2.5/weather?APPID=#{Rails.application.secrets.api_openweathermap_key}&q='#{city}'")
-    response = HTTParty.get(url)
-    @city = JSON.parse(response.body)
-
-    # @city = Rails.application.secrets.api_openweathermap_key
 
     respond_to do |format|
       format.js
@@ -28,7 +35,7 @@ class WorksController < ApplicationController
 
   private
   def form_city
-    params.require(:form_city).permit(:name)
+    params.require(:form_region).permit(:name, :country)
   end
 
 end
