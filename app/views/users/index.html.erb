@@ -1,5 +1,5 @@
 
-<%= form_for :form_region, url: {controller:"works", action: "select_country"}, html: {class: "user_form"} do |f| %>
+<%= form_for :form_region, url: {controller:"works", action: "create"}, html: {class: "user_form"} do |f| %>
     <!-- remote: true -->
     <div class="form-group">
       <%= f.text_field :name, class: "form-control", placeholder: "city" %>

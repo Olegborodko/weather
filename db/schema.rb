@@ -10,16 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170531123450) do
+ActiveRecord::Schema.define(version: 20170604122207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "users", force: :cascade do |t|
-    t.string "email", null: false
+  create_table "json_requests", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "location_id"
+    t.text "json_openweathermap"
+    t.text "json_wunderground"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "city", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "country", null: false
+    t.string "country_key", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "rid", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rid"], name: "index_users_on_rid"
   end
 
 end

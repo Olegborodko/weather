@@ -7,10 +7,15 @@ class GetCountryAndCity
   def call
     result = {}
     if answer['status']=='OK'
-      result[:city] = answer['results'].first['address_components'].first['long_name'].to_s # city
-      result[:country] = answer['results'].first['address_components'][2]['long_name'].to_s # country
-      result[:country_key] = answer['results'].first['address_components'][2]['short_name'].to_s # country_key
-      result
+      begin
+        result[:city] = answer['results'].first['address_components'].first['long_name'].to_s # city
+        result[:country] = answer['results'].first['address_components'].last['long_name'].to_s # country
+        result[:country_key] = answer['results'].first['address_components'].last['short_name'].to_s # country_key
+      rescue Exception => e
+        false
+      else
+        result
+      end
     else
       false
     end

@@ -10,8 +10,15 @@ class ApiOpenweathermap
   def call
     get_answer = answer
     if get_answer
-      weater_days(get_answer)
-      # get_answer['list'][0]['weather'].first['main']
+
+      begin
+        result = weater_days(get_answer)
+      rescue Exception => e
+        false
+      else
+        result
+      end
+
     else
       false
     end
