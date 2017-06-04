@@ -14,7 +14,7 @@ class ApiOpenweathermap
       begin
         result = weater_days(get_answer)
       rescue Exception => e
-        false
+        { error: true }
       else
         result
       end
@@ -30,6 +30,9 @@ class ApiOpenweathermap
     result = Hash.new {|h,k| h[k] = {} }
 
     @days.times do |i|
+      result[i][:date] = "#{(Time.now + i.day).strftime("%Y-%m-%d")}"
+      result[i][:city] = @city
+      result[i][:country] = @country
       result[i][:temp_min] = get_answer['list'][i]['main']['temp_min'].round
       result[i][:temp_max] = get_answer['list'][i]['main']['temp_max'].round
       result[i][:sky] = get_answer['list'][i]['weather'].first['main']

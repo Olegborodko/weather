@@ -20,7 +20,9 @@ $(document).ready(function() {
   //   });
   // })
 
-  // $("#custom_select").chosen();
+  $("#custom_select").chosen({
+    allow_single_deselect: true
+  });
 });
 
 

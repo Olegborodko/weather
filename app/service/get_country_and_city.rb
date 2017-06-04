@@ -1,7 +1,8 @@
 class GetCountryAndCity
 
-  def initialize(city)
+  def initialize(country_key, city)
     @city = city
+    @country_key = country_key
   end
 
   def call
@@ -24,7 +25,7 @@ class GetCountryAndCity
   private
 
   def answer
-    url = URI.escape("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='#{ @city }'")
+    url = URI.escape("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='#{@country_key} #{ @city }'")
     response = HTTParty.get(url)
     # puts response.body, response.code, response.message, response.headers.inspect
 

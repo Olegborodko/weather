@@ -21,12 +21,15 @@ class ApiWunderground
     begin
       get_answer = w_api.forecast_for(@country_key, @city)
       @days.times do |i|
+        result[i][:date] = "#{(Time.now + i.day).strftime("%Y-%m-%d")}"
+        result[i][:city] = @city
+        result[i][:country] = @country
         result[i][:temp_min] = get_answer['forecast']['simpleforecast']['forecastday'][i]['low']['celsius']
         result[i][:temp_max] = get_answer['forecast']['simpleforecast']['forecastday'][i]['high']['celsius']
         result[i][:sky] = get_answer['forecast']['simpleforecast']['forecastday'][i]['conditions']
       end
     rescue Exception => e
-      false
+      { error: true }
     else
       result
     end

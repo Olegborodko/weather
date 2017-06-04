@@ -1,14 +1,51 @@
 
 <%= form_for :form_region, url: {controller:"works", action: "create"}, html: {class: "user_form"} do |f| %>
-    <!-- remote: true -->
-    <div class="form-group">
-      <%= f.text_field :name, class: "form-control", placeholder: "city" %>
-    </div>
-    <div class="form-group">
-      <%= f.submit "select", class: "btn, btn-default" %>
-    </div>
+  <!-- remote: true -->
+  <div class="form-group">
+    <select name="form_region[country_key]" id="custom_select">
+      <option value="EMPTY"></option>
+      <% IsoCountryCodes.for_select.each do |i| %>
+        <option value="<%= i.second %>"><%= i.first %></option>
+      <% end %>
+    </select>
+  </div>
+  <div class="form-group">
+    <%= f.text_field :city, class: "form-control", placeholder: "city" %>
+  </div>
+  <div class="form-group">
+    <%= f.submit "select", class: "btn, btn-default" %>
+  </div>
 <% end %>
 
 <br><br>
 
 <div id="result"></div>
+
+<% @json_1.each do |i| %>
+  <% i.each do |i1| %>
+    <% if i1.second!=true %>
+      <ul>
+        <li><%= i1.second[:city] %> | <%= i1.second[:country] %></li>
+        <li><%= i1.second[:date] %></li>
+        <li><%= i1.second[:sky] %></li>
+        <li><%= i1.second[:temp_min] %></li>
+        <li><%= i1.second[:temp_max] %></li>
+      </ul>
+    <% end %>
+  <% end %>
+<% end %>
+
+
+<% @json_2.each do |i| %>
+  <% i.each do |i1| %>
+    <% if i1.second!=true %>
+      <ul>
+        <li><%= i1.second[:city] %> | <%= i1.second[:country] %></li>
+        <li><%= i1.second[:date] %></li>
+        <li><%= i1.second[:sky] %></li>
+        <li><%= i1.second[:temp_min] %></li>
+        <li><%= i1.second[:temp_max] %></li>
+      </ul>
+    <% end %>
+  <% end %>
+<% end %>
