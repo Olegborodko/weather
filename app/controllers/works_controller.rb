@@ -2,14 +2,7 @@ class WorksController < ApplicationController
   def create
 
     return @error = 'please enter city' if form_region[:city].blank?
-
-    # if form_region[:country_key].blank?
-
-    if form_region[:country_key] != 'EMPTY'
-      country = IsoCountryCodes.find(form_region[:country_key]).name
-    else
-      country = ''
-    end
+    country = get_country(form_region[:country_key])
 
     location = GetCountryAndCity.new(country, form_region[:city]).call
     return @error = 'can\'t find location' if !location
@@ -17,29 +10,16 @@ class WorksController < ApplicationController
     country_key = location[:country_key]
     city = location[:city]
     country = location[:country]
-    # else
-    #   country_key = form_region[:country_key]
-    #   city = form_region[:city]
-    #   country = IsoCountryCodes.find(country_key).name
-    # end
 
+    # find city and country in db location and get id location (if need then create)
+    location_id = get_location_id(country, country_key, city)
 
-    # find city and country in db location and get id location
+    # find weather for today for this country and city without errors
 
-    location = Location.find_by country_key: country_key, city: city
-    if location
-      location_id = location.id
-    else
-      result = Location.create(city: city, country: country, country_key: country_key)
-      location_id = result.id
-    end
-
-
-    # find weather for today for this country and city
-
-    j = JsonRequest.find_by location_id: location_id
+    j = Work.find_by location_id: location_id
     if j
-      if j.updated_at.day == Time.now.day || j.updated_at.month == Time.now.month
+      if j.updated_at.day == Time.now.day && j.updated_at.month == Time.now.month &&
+         eval(j.json_openweathermap).size != 1 && eval(j.json_wunderground).size != 1
         @json_1 = j.json_openweathermap
         @json_2 = j.json_wunderground
         return
@@ -50,12 +30,19 @@ class WorksController < ApplicationController
     # if can't find then create new weather
 
     user = current_user
-
     json_openweathermap = ApiOpenweathermap.new(city, country_key, 5).call
     json_wunderground = ApiWunderground.new(city, country_key, 4).call
 
+    result = Work.find_by user_id: user.id, location_id: location_id
+    if result
+      result.json_openweathermap = json_openweathermap
+      result.json_wunderground = json_wunderground
+      result.save
+      return
+    end
+
     if json_openweathermap || json_wunderground
-      j = JsonRequest.create(user_id: user.id,
+      j = Work.create(user_id: user.id,
                              location_id: location_id,
                              json_openweathermap: json_openweathermap,
                              json_wunderground: json_wunderground)

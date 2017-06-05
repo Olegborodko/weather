@@ -24,21 +24,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # def current_location(country, city)
-  #   result = GetCountryAndCity.new(country, city).call
-  #   if result
-  #     find_city = City.find_by title: result[:city]
-  #
-  #     if find_city
-  #       find_city
-  #     else
-  #       City.create(title: result[:city])
-  #     end
-  #   end
-  # end
+  def get_location_id(country, country_key, city)
+    location = Location.find_by country_key: country_key, city: city
+    if location
+      location.id
+    else
+      result = Location.create(city: city, country: country, country_key: country_key)
+      result.id
+    end
+  end
 
-  def location_exist_in_db?(country_key, city)
-    Location.find_by country_key: country_key, city: city
+  def get_country(country_key)
+    if country_key != 'EMPTY'
+      IsoCountryCodes.find(country_key).name
+    else
+      nil
+    end
   end
 
 end
