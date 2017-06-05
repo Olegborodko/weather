@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   # cookies.delete :weather_api_setcs
 
+  include ApplicationHelper
+
   private
 
   def current_user
@@ -38,7 +40,23 @@ class ApplicationController < ActionController::Base
     if country_key != 'EMPTY'
       IsoCountryCodes.find(country_key).name
     else
-      nil
+      ''
+    end
+  end
+
+  def show_weather
+    user = current_user
+
+    if user
+      json_result = []
+
+      Work.where(user_id: user.id).each do |ob|
+        json_result << eval(ob.json_openweathermap)
+        json_result << eval(ob.json_wunderground)
+      end
+      json_result
+    else
+      false
     end
   end
 

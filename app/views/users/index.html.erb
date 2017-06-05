@@ -1,6 +1,5 @@
 
-<%= form_for :form_region, url: {controller:"works", action: "create"}, html: {class: "user_form"} do |f| %>
-  <!-- remote: true -->
+<%= form_for :form_region, url: {controller:"works", action: "create"}, html: {class: "user_form"}, remote: true do |f| %>
   <div class="form-group">
     <select name="form_region[country_key]" id="custom_select">
       <option value="EMPTY"></option>
@@ -18,34 +17,10 @@
 <% end %>
 
 <br><br>
+<div id="error"></div>
 
-<div id="result"></div>
+<div id="result">
+  <%= render partial: "shared/work" %>
+  <%#= @weather_show %>
+</div>
 
-<% @json_1.each do |i| %>
-  <% i.each do |i1| %>
-    <% if i1.second!=true %>
-      <ul>
-        <li><%= i1.second[:city] %> | <%= i1.second[:country] %></li>
-        <li><%= i1.second[:date] %></li>
-        <li><%= i1.second[:sky] %></li>
-        <li><%= i1.second[:temp_min] %></li>
-        <li><%= i1.second[:temp_max] %></li>
-      </ul>
-    <% end %>
-  <% end %>
-<% end %>
-
-
-<% @json_2.each do |i| %>
-  <% i.each do |i1| %>
-    <% if i1.second!=true %>
-      <ul>
-        <li><%= i1.second[:city] %> | <%= i1.second[:country] %></li>
-        <li><%= i1.second[:date] %></li>
-        <li><%= i1.second[:sky] %></li>
-        <li><%= i1.second[:temp_min] %></li>
-        <li><%= i1.second[:temp_max] %></li>
-      </ul>
-    <% end %>
-  <% end %>
-<% end %>

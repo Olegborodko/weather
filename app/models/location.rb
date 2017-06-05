@@ -1,5 +1,4 @@
 class Location < ApplicationRecord
-  has_many :works
 
   validates :city, presence: true
   validates :country, presence: true

@@ -1,0 +1,18 @@
+<% if @weather_show %>
+
+  <% @weather_show.each do |i| %>
+    <% i.each do |i1| %>
+      <% if i1.second!=true %>
+        <ul>
+          <li><%= i1.second[:city] %> | <%= i1.second[:country] %></li>
+          <li><%= i1.second[:date] %></li>
+          <li><%= i1.second[:sky] %></li>
+          <li><%= i1.second[:temp_min] %></li>
+          <li><%= i1.second[:temp_max] %></li>
+        </ul>
+      <% end %>
+    <% end %>
+    <div>---</div>
+  <% end %>
+
+<% end %>

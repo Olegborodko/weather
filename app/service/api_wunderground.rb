@@ -1,9 +1,9 @@
 class ApiWunderground
 
-  def initialize(city, country_key, days)
+  def initialize(city, country, days)
     @key = Rails.application.secrets.api_wunderground_key
     @city = city
-    @country_key = country_key
+    @country = country
 
     if days > 4
       @days = 4
@@ -19,7 +19,7 @@ class ApiWunderground
     w_api = Wunderground.new("#{@key}")
 
     begin
-      get_answer = w_api.forecast_for(@country_key, @city)
+      get_answer = w_api.forecast_for("#{@country}", "#{@city}")
       @days.times do |i|
         result[i][:date] = "#{(Time.now + i.day).strftime("%Y-%m-%d")}"
         result[i][:city] = @city
