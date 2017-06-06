@@ -25,7 +25,7 @@ class GetCountryAndCity
   private
 
   def answer
-    url = URI.escape("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='#{@country_key} #{ @city }'")
+    url = URI.escape("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='#{@country_key}, #{ @city }'")
     response = HTTParty.get(url)
     # puts response.body, response.code, response.message, response.headers.inspect
 

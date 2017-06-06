@@ -10,7 +10,7 @@ class WorksController < ApplicationController
 
     country = get_country(form_region[:country_key])
 
-    location = GetCountryAndCity.new(country, form_region[:city]).call
+    location = GetCountryAndCity.new(form_region[:country_key], form_region[:city]).call
     if !location
       @weather_show = weather_show
       @error = 'can\'t find location'
@@ -59,6 +59,27 @@ class WorksController < ApplicationController
     respond_to do |format|
       format.js
     end
+
+  end
+
+  def destroy
+    user = current_user
+    el = params[:id].to_i
+
+    if user
+      if user.works.exists?(el)
+        user.works.delete(el)
+      end
+    end
+
+    @weather_show = weather_show
+
+    respond_to do |format|
+      format.js { render template: "works/create" }
+    end
+  end
+
+  def show
 
   end
 

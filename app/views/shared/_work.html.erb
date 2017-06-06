@@ -1,18 +1,49 @@
 <% if @weather_show %>
+  <!-- json_wunderground -->
 
-  <% @weather_show.each do |i| %>
-    <% i.each do |i1| %>
-      <% if i1.second!=true %>
-        <ul>
-          <li><%= i1.second[:city] %> | <%= i1.second[:country] %></li>
-          <li><%= i1.second[:date] %></li>
-          <li><%= i1.second[:sky] %></li>
-          <li><%= i1.second[:temp_min] %></li>
-          <li><%= i1.second[:temp_max] %></li>
-        </ul>
+  <div class="weather_block">
+    <% @weather_show.each do |i| %>
+
+      <% i.second[:json_openweathermap].each do |i1| %>
+        <% if i1.first!=:error %>
+          <% if i1.first==0 %>
+            <div class="country"><%= i1.second[:city] %> | <%= i1.second[:country] %>
+              <%= link_to 'Destroy', work_path(i.second[:id]), method: :delete, remote: true, data: { confirm: 'Are you sure?' } %>
+            </div>
+          <% end %>
+          <ul>
+            <li><%= i1.second[:date] %></li>
+            <li><%= i1.second[:sky] %></li>
+            <li>min C&deg; <%= i1.second[:temp_min] %></li>
+            <li>max C&deg; <%= i1.second[:temp_max] %></li>
+          </ul>
+        <% end %>
       <% end %>
     <% end %>
-    <div>---</div>
-  <% end %>
+  </div>
+
+
+  <div class="weather_block">
+    <% @weather_show.each do |i| %>
+      <% i.second[:json_wunderground].each do |i1| %>
+        <% if i1.first!=:error %>
+          <% if i1.first==0 %>
+            <div class="country"><%= i1.second[:city] %> | <%= i1.second[:country] %>
+              <%= link_to 'Destroy', work_path(i.second[:id]), method: :delete, remote: true, data: { confirm: 'Are you sure?' } %>
+            </div>
+          <% end %>
+          <ul>
+            <li><%= i1.second[:date] %></li>
+            <li><%= i1.second[:sky] %></li>
+            <li>min C&deg; <%= i1.second[:temp_min] %></li>
+            <li>max C&deg; <%= i1.second[:temp_max] %></li>
+          </ul>
+        <% end %>
+      <% end %>
+      <%#= link_to 'Destroy', work_path(@weather_show.first.second[:id]), method: :delete, data: { confirm: 'Are you sure?' } %>
+    <% end %>
+  </div>
+
+
 
 <% end %>
