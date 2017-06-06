@@ -42,6 +42,16 @@ gem 'iso_country_codes'
 gem 'chosen-rails'
 gem 'wunderground'
 
+group :test do
+  gem 'rspec-rails'
+  gem 'simplecov', require: false
+  gem 'database_cleaner'
+  gem 'faker'
+  gem 'factory_girl_rails'
+  gem 'rails-controller-testing'
+  gem 'show_me_the_cookies'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -52,7 +62,6 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'web-console'
   gem 'listen'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'

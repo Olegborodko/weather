@@ -10,7 +10,7 @@ class WorksController < ApplicationController
 
     country = get_country(form_region[:country_key])
 
-    location = GetCountryAndCity.new(form_region[:country_key], form_region[:city]).call
+    location = GetCountryAndCity.new(country, form_region[:city]).call
     if !location
       @weather_show = weather_show
       @error = 'can\'t find location'
@@ -25,22 +25,21 @@ class WorksController < ApplicationController
     location_id = get_location_id(country, country_key, city)
     user = current_user
 
-    # погода есть в базе и она актуальная, тут проверка на актуальность
-    # добавляем юзеру но не записываем и не обновляем
     weather = Work.find_by location_id: location_id
 
     if weather
-      unless weather.updated_at.day == Time.now.day && weather.updated_at.month == Time.now.month
+      if weather.updated_at.day != Time.now.day || weather.updated_at.month != Time.now.month
 
-        # погода не актуальная
+        # the weather is not up to date
         json_openweathermap = ApiOpenweathermap.new(city, country, 5).call
         json_wunderground = ApiWunderground.new(city, country, 4).call
 
         weather.update_attributes(json_openweathermap: json_openweathermap,
                                   json_wunderground: json_wunderground)
+
       end
     else
-      #погоды нет в базе
+      # no weather in the database
       json_openweathermap = ApiOpenweathermap.new(city, country, 5).call
       json_wunderground = ApiWunderground.new(city, country, 4).call
 
@@ -54,6 +53,7 @@ class WorksController < ApplicationController
       user.works << weather
     end
 
+    @error = ''
     @weather_show = weather_show
 
     respond_to do |format|

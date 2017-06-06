@@ -10,16 +10,21 @@ class GetCountryAndCity
     if answer['status']=='OK'
       begin
         result[:city] = answer['results'].first['address_components'].first['long_name'].to_s # city
-        result[:country] = answer['results'].first['address_components'].last['long_name'].to_s # country
-        result[:country_key] = answer['results'].first['address_components'].last['short_name'].to_s # country_key
+
+        answer['results'].first['address_components'].each do |i|
+          if i['types'].first == 'country'
+            result[:country] = i['long_name'].to_s # country
+            result[:country_key] = i['short_name'].to_s # country_key
+          end
+        end
+
       rescue Exception => e
-        false
+
       else
-        result
+        return result
       end
-    else
-      false
     end
+    false
   end
 
   private

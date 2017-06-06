@@ -14,14 +14,12 @@ class ApiOpenweathermap
       begin
         result = weater_days(get_answer)
       rescue Exception => e
-        { error: true }
-      else
-        result
-      end
 
-    else
-      false
+      else
+        return result
+      end
     end
+    { error: true }
   end
 
   private
