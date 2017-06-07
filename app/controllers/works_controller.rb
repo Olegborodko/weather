@@ -28,25 +28,59 @@ class WorksController < ApplicationController
     weather = Work.find_by location_id: location_id
 
     if weather
-      if weather.updated_at.day != Time.now.day || weather.updated_at.month != Time.now.month
 
-        # the weather is not up to date
+      if weather.time_openweathermap.day != Time.now.day || weather.time_openweathermap.month != Time.now.month
         json_openweathermap = ApiOpenweathermap.new(city, country, 5).call
-        json_wunderground = ApiWunderground.new(city, country, 4).call
-
-        weather.update_attributes(json_openweathermap: json_openweathermap,
-                                  json_wunderground: json_wunderground)
-
+        if json_openweathermap
+          if json_openweathermap[:error] == true
+            weather.update_attribute(time_openweathermap: Time.now)
+          else
+            weather.update_attributes(json_openweathermap: json_openweathermap, time_openweathermap: Time.now)
+          end
+        end
       end
+
+      if weather.time_wunderground.day != Time.now.day || weather.time_wunderground.month != Time.now.month
+        json_wunderground = ApiWunderground.new(city, country, 4).call
+        if json_wunderground
+          if json_wunderground[:error] == true
+            weather.update_attribute(time_wunderground: Time.now)
+          else
+            weather.update_attributes(json_wunderground: json_wunderground, time_wunderground: Time.now)
+          end
+        end
+      end
+
     else
       # no weather in the database
       json_openweathermap = ApiOpenweathermap.new(city, country, 5).call
       json_wunderground = ApiWunderground.new(city, country, 4).call
 
-      weather = Work.new(location_id: location_id,
-                         json_openweathermap: json_openweathermap,
-                         json_wunderground: json_wunderground)
+      if json_openweathermap == false && json_wunderground == false
+        @weather_show = weather_show
+        @error = 'can\'t find results'
+        return
+      end
+
+      weather = Work.new
+
+      if json_openweathermap
+        weather.time_openweathermap = Time.now
+        unless json_openweathermap.key?(:error)
+          weather.json_openweathermap = json_openweathermap
+        end
+      end
+
+      if json_wunderground
+        weather.time_wunderground = Time.now
+        unless json_wunderground.key?(:error)
+          weather.json_wunderground = json_wunderground
+        end
+      end
+
+      weather.location_id = location_id
       weather.save
+
     end
 
     unless user.works.include?(weather)
@@ -59,6 +93,14 @@ class WorksController < ApplicationController
     respond_to do |format|
       format.js
     end
+
+  end
+
+  def new
+
+
+    # @get_answer = ApiWunderground.new('Odessa', 'Cherkassy', 4).call
+    @get_answer = ApiOpenweathermap.new('', '', 5).call
 
   end
 

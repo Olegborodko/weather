@@ -20,6 +20,14 @@ class ApiWunderground
 
     begin
       get_answer = w_api.forecast_for("#{@country}", "#{@city}")
+      if get_answer['forecast'] == nil
+        return { error: true }
+      end
+
+      if get_answer['response']['error'] != nil
+        return { error: true }
+      end
+
       @days.times do |i|
         result[i][:date] = "#{(Time.now + i.day).strftime("%Y-%m-%d")}"
         result[i][:city] = @city
@@ -29,7 +37,7 @@ class ApiWunderground
         result[i][:sky] = get_answer['forecast']['simpleforecast']['forecastday'][i]['conditions']
       end
     rescue Exception => e
-      { error: true }
+      false # not connect
     else
       result
     end

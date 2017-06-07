@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605140139) do
+ActiveRecord::Schema.define(version: 20170607121246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 20170605140139) do
     t.text "json_wunderground"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "time_openweathermap"
+    t.datetime "time_wunderground"
   end
 
 end

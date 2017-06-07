@@ -8,18 +8,17 @@ class ApiOpenweathermap
   end
 
   def call
-    get_answer = answer
-    if get_answer
-
-      begin
+    begin
+      get_answer = answer
+      if get_answer
+        return { error: true } if get_answer['cod']=='404'
         result = weater_days(get_answer)
-      rescue Exception => e
-
-      else
-        return result
       end
+    rescue Exception => e
+      false
+    else
+      result
     end
-    { error: true }
   end
 
   private
