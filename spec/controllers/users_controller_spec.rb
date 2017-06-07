@@ -16,6 +16,7 @@ describe UsersController do
     expect(user).to eq User.last
     expect(user.works.size).to eq 0
     expect(assigns(:weather_show)).to eq(nil)
+    expect(response).to render_template(:index)
   end
 
 end

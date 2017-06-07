@@ -11,7 +11,6 @@ describe ApplicationController do
     @location = create(:location)
   end
 
-
   it "current_user" do
     user = controller.send(:current_user)
     expect(user.class).to eq User.new.class
@@ -35,7 +34,7 @@ describe ApplicationController do
 
   it "get_country empty" do
     result = controller.send(:get_country, 'EMPTY')
-    expect(result).to eq ''
+    expect(result).to eq nil
   end
 
 end

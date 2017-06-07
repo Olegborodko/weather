@@ -1,8 +1,9 @@
 class GetCountryAndCity
 
-  def initialize(country_key, city)
+  def initialize(country, country_key, city)
     @city = city
     @country_key = country_key
+    @country = country
   end
 
   def call
@@ -21,7 +22,22 @@ class GetCountryAndCity
       rescue Exception => e
 
       else
-        return result
+        if !result[:country] and @country
+          result[:country] = @country
+        end
+
+        if !result[:country_key] and @country_key != 'EMPTY'
+          result[:country_key] = @country_key
+        end
+
+        if !result[:city] and @city
+          result[:city] = @city
+        end
+
+        if result[:country] and result[:country_key] and result[:city]
+          return result
+        end
+
       end
     end
     false
@@ -30,7 +46,7 @@ class GetCountryAndCity
   private
 
   def answer
-    url = URI.escape("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='#{@country_key}, #{ @city }'")
+    url = URI.escape("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='#{@country}, #{ @city }'")
     response = HTTParty.get(url)
     # puts response.body, response.code, response.message, response.headers.inspect
 

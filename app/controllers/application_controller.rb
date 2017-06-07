@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     if country_key != 'EMPTY'
       IsoCountryCodes.find(country_key).name
     else
-      ''
+      nil
     end
   end
 
@@ -58,10 +58,6 @@ class ApplicationController < ActionController::Base
     else
       false
     end
-  end
-
-  def is_number? string
-    true if Float(string) rescue false
   end
 
 end

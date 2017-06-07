@@ -10,7 +10,7 @@ class WorksController < ApplicationController
 
     country = get_country(form_region[:country_key])
 
-    location = GetCountryAndCity.new(country, form_region[:city]).call
+    location = GetCountryAndCity.new(country, form_region[:country_key], form_region[:city]).call
     if !location
       @weather_show = weather_show
       @error = 'can\'t find location'
@@ -93,14 +93,6 @@ class WorksController < ApplicationController
     respond_to do |format|
       format.js
     end
-
-  end
-
-  def new
-
-
-    # @get_answer = ApiWunderground.new('Odessa', 'Cherkassy', 4).call
-    @get_answer = ApiOpenweathermap.new('', '', 5).call
 
   end
 

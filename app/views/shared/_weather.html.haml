@@ -1,0 +1,16 @@
+.weather_block
+  - weather_show.each do |i|
+    - if i.second[json_key]
+      - i.second[json_key].each do |i1|
+        - if i1.first!=:error
+          - if i1.first==0
+            .country
+              = i1.second[:city]
+              | #{i1.second[:country]}&nbsp;#{link_to 'Destroy', work_path(i.second[:id]), method: :delete, remote: true, data: { confirm: 'Are you sure?' }}
+          %ul
+            %li= i1.second[:date]
+            %li= i1.second[:sky]
+            %li
+              min C° #{i1.second[:temp_min]}
+            %li
+              max C° #{i1.second[:temp_max]}

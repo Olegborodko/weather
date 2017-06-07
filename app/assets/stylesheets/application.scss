@@ -16,28 +16,47 @@
 @import "bootstrap";
 @import "chosen";
 
-.weather_block ul{
-  display: block;
-  list-style-type: none;
-  width: 100%;
-  height: 20px;
-  margin: 10px 0;
-}
+$border-color: #000000;
+$input-city-width: 374px;
+$grey: #ebebeb;
+$font-size: 100%;
+$font-size-1x2: $font-size * 1.2;
 
-.weather_block ul li{
-  float:left;
-  width: 25%;
+
+.user_form{
+  margin:10px 0;
 }
 
 .weather_block{
-  border:1px solid #000000;
+  margin-bottom: 20px;
+
+  &:nth-child(2n){
+    background: $grey;
+    padding:10px;
+  }
+
+  ul{
+    display: block;
+    list-style-type: none;
+    width: 100%;
+    height: 20px;
+    margin: 10px 0;
+  }
+
+  ul li{
+    float:left;
+    width: 25%;
+  }
+
 }
 
 #form_region_city{
-  width: 374px;
+  width: $input-city-width;
 }
 
 .country{
+  border-bottom:1px solid $border-color;
   text-align: center;
   padding: 10px;
+  font-size: $font-size-1x2;
 }

@@ -1,0 +1,15 @@
+= form_for :form_region, url: {controller:"works", action: "create"}, html: {class: "user_form"}, remote: true do |f|
+  .form-group
+    %select{:name => "form_region[country_key]", :id => "custom_select"}
+      %option{:value => "EMPTY"}
+      - IsoCountryCodes.for_select.each do |i|
+        %option{:value => i.second}= i.first
+  .form-group
+    = f.text_field :city, class: "form-control", placeholder: "city"
+  .form-group
+    = f.submit "select", class: "btn, btn-default"
+
+#error
+
+#result
+  = render partial: "shared/work"
