@@ -26,13 +26,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def get_location_id(country, country_key, city)
+  def get_location(country, country_key, city)
     location = Location.find_by country_key: country_key, city: city
     if location
-      location.id
+      location
     else
-      result = Location.create(city: city, country: country, country_key: country_key)
-      result.id
+      Location.create(city: city, country: country, country_key: country_key)
     end
   end
 
@@ -41,22 +40,6 @@ class ApplicationController < ActionController::Base
       IsoCountryCodes.find(country_key).name
     else
       nil
-    end
-  end
-
-  def show_weather
-    user = current_user
-
-    if user
-      json_result = []
-
-      Work.where(user_id: user.id).each do |ob|
-        json_result << eval(ob.json_openweathermap)
-        json_result << eval(ob.json_wunderground)
-      end
-      json_result
-    else
-      false
     end
   end
 

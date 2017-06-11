@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607121246) do
+ActiveRecord::Schema.define(version: 20170611170733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "apis", force: :cascade do |t|
+    t.text "json"
+    t.datetime "time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "category", null: false
+  end
 
   create_table "locations", force: :cascade do |t|
     t.string "city", null: false
@@ -41,12 +49,9 @@ ActiveRecord::Schema.define(version: 20170607121246) do
 
   create_table "works", force: :cascade do |t|
     t.integer "location_id"
-    t.text "json_openweathermap"
-    t.text "json_wunderground"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "time_openweathermap"
-    t.datetime "time_wunderground"
+    t.integer "api_id", null: false
   end
 
 end

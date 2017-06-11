@@ -8,18 +8,15 @@ module ApplicationHelper
       if weathers.size > 0
         results = Hash.new {|h,k| h[k] = {} }
 
-        i = 0
-        weathers.each do |ob|
-          if ob.json_openweathermap
-            results[i][:json_openweathermap] = eval(ob.json_openweathermap)
+
+        weathers.each_with_index do |ob, index|
+          if ob.api.json
+            results[index][:json] = eval(ob.api.json)
           end
 
-          if ob.json_wunderground
-            results[i][:json_wunderground] = eval(ob.json_wunderground)
-          end
+          results[index][:id] = ob.location_id
+          # puts "#{ob.api.class}<---"
 
-          results[i][:id] = ob.id
-          i += 1
         end
       end
       return results
