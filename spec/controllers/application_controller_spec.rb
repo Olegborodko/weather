@@ -16,15 +16,15 @@ describe ApplicationController do
     expect(user.class).to eq User.new.class
   end
 
-  it "get_location_id create" do
-    location = controller.send(:get_location_id, 'Ukraine', 'UA', 'Cherkassy')
-    expect(location).to eq Location.last.id
+  it "get_location create" do
+    location = controller.send(:get_location, 'Ukraine', 'UA', 'Cherkassy')
+    expect(location).to eq Location.last
   end
 
-  it "get_location_id exists" do
-    location = controller.send(:get_location_id, @location.country, @location.country_key, @location.city)
+  it "get_location exists" do
+    location = controller.send(:get_location, @location.country, @location.country_key, @location.city)
     result = Location.find_by city: @location.city, country_key: @location.country_key
-    expect(location).to eq result.id
+    expect(location).to eq result
   end
 
   it "get_country" do

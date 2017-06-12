@@ -22,4 +22,14 @@ describe Location do
     expect(location).to be_invalid
   end
 
+  it "has_many :works" do
+    assc = described_class.reflect_on_association(:works)
+    expect(assc.macro).to eq :has_many
+  end
+
+  it "has_many :apis" do
+    assc = described_class.reflect_on_association(:apis)
+    expect(assc.macro).to eq :has_many
+  end
+
 end

@@ -8,7 +8,6 @@ class WeatherUpdate
   end
 
   def call
-    puts "#{@location.apis.size}<---------------------------------"
     if @location.apis.size == @amount_api
       @location.apis.each_with_index do |el, index|
         if el.time.day != Time.now.day || el.time.month != Time.now.month
@@ -31,8 +30,8 @@ class WeatherUpdate
       end
     end
 
-    unless @user.works.exists?(@location.weathers)
-      @user.works << @location.weathers
+    unless @user.works.exists?(@location.works)
+      @user.works << @location.works
     end
   end
 

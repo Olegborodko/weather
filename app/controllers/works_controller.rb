@@ -41,7 +41,10 @@ class WorksController < ApplicationController
     location_id = params[:id].to_i
 
     if user
-      user.works.where(location_id: location_id).destroy_all
+      user.works.where(location_id: location_id).each do |el|
+        user.works.delete(el.id)
+        #user.works.clear
+      end
     end
 
     @weather_show = weather_show
